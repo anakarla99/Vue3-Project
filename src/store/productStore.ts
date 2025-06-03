@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '@/services/api'
 
 export const useProductStore = defineStore('product', {
   state: () => ({
@@ -11,10 +11,11 @@ export const useProductStore = defineStore('product', {
     async fetchProducts() {
       this.loading = true;
       try {
-        const res = await axios.get('/products/published/web');
+        const res = await api.get('/products/published/web');
         this.products = res.data;
       } catch (err) {
         console.error(err);
+        alert('Ocurrió un error al cargar los productos. Intente más tarde.');
       } finally {
         this.loading = false;
       }
@@ -23,10 +24,11 @@ export const useProductStore = defineStore('product', {
     async fetchProductDetails(id: string) {
       this.loading = true;
       try {
-        const res = await axios.get(`/products/${id}/details`);
+        const res = await api.get(`/products/${id}/details`);
         this.selectedProduct = res.data;
       } catch (err) {
         console.error(err);
+        alert('Ocurrió un error al cargar los productos. Intente más tarde.');
       } finally {
         this.loading = false;
       }
