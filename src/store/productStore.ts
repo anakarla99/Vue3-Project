@@ -1,10 +1,21 @@
 import { defineStore } from 'pinia'
 import api from '@/services/api'
 
+interface Product {
+  id: number
+  name: string
+  image: string
+  price: number
+}
+
+interface ProductDetails extends Product {
+  description: string
+}
+
 export const useProductStore = defineStore('product', {
   state: () => ({
-    products: [],
-    selectedProduct: null,
+    products: [] as Product[],
+    selectedProduct: null as ProductDetails | null,
     loading: false,
   }),
   actions: {
@@ -21,7 +32,7 @@ export const useProductStore = defineStore('product', {
       }
     },
 
-    async fetchProductDetails(id: string) {
+    async fetchProductDetails(id: number) {
       this.loading = true;
       try {
         const res = await api.get(`/products/${id}/details`);

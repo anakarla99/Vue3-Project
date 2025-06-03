@@ -1,15 +1,11 @@
 <template>
-  <div>
-    <div v-if="store.loading" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div v-for="i in 6" :key="i" class="animate-pulse bg-gray-300 h-48 rounded"></div>
-    </div>
-    <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <ProductCard
-        v-for="product in store.products"
-        :key="product.id"
-        :product="product"
-      />
-    </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <ProductCard
+      v-for="product in products"
+      :key="product.id"
+      :product="product"
+      @view-details="onViewDetails"
+    />
   </div>
 </template>
 
@@ -17,6 +13,20 @@
 import { onMounted } from 'vue';
 import { useProductStore } from '@/store/productStore';
 import ProductCard from './ProductCard.vue';
+
+defineProps<{
+  products: {
+    id: number
+    name: string
+    image: string
+    price: number
+  }[]
+}>()
+defineEmits(['view-details'])
+
+const onViewDetails = (id: number) => {
+  emit('view-details', id)
+}
 
 const store = useProductStore();
 
